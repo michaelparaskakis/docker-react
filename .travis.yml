@@ -8,15 +8,17 @@ before_install:
 script:
   - docker run -e CI=true mparaskakis/docker-react npm run test -- --coverage
 
+before_deploy:
+  - rvm 1.9.3 do gem install aws-sdk -v 2.1.36
+
 deploy:
   provider: elasticbeanstalk
   region: "us-east-2"
   app: "docker-react"
   env: "DockerReact-env"
   bucket_name: "elasticbeanstalk-us-east-2-530114946190"
-  bucket_path: "docker-react"
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key:
-    secure: $AWS_SECRET_KEY
+    secure: "$AWS_SECRET_KEY"
